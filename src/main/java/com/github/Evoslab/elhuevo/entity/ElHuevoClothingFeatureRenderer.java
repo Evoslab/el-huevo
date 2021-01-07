@@ -6,7 +6,6 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
@@ -97,57 +96,5 @@ public class ElHuevoClothingFeatureRenderer extends FeatureRenderer<ElHuevoEntit
             this.renderModelWithSkin(skin, matrixStack, vertexConsumerProvider, i, elHuevoEntity);
         }
 
-        /*
-        if (elHuevoEntity.isTamed() && !elHuevoEntity.isInvisible() && elHuevoEntity.getClothingColor() == DyeColor.RED) {
-            float[] fs = elHuevoEntity.getClothingColor().getColorComponents();
-            renderModel(this.getContextModel(), SKIN_RED, matrixStack, vertexConsumerProvider, i, elHuevoEntity, fs[0], fs[1], fs[2]);
-        } else if (elHuevoEntity.isTamed() && !elHuevoEntity.isInvisible() && elHuevoEntity.getClothingColor() == DyeColor.BLACK) {
-            float[] fs = elHuevoEntity.getClothingColor().getColorComponents();
-            renderModel(this.getContextModel(), SKIN_BLACK, matrixStack, vertexConsumerProvider, i, elHuevoEntity, fs[0], fs[1], fs[2]);
-        } else if (elHuevoEntity.isTamed() && !elHuevoEntity.isInvisible() && elHuevoEntity.getClothingColor() == DyeColor.GREEN) {
-            float[] fs = elHuevoEntity.getClothingColor().getColorComponents();
-            renderModel(this.getContextModel(), SKIN_GREEN, matrixStack, vertexConsumerProvider, i, elHuevoEntity, fs[0], fs[1], fs[2]);
-        } else if (elHuevoEntity.isTamed() && !elHuevoEntity.isInvisible() && elHuevoEntity.getClothingColor() == DyeColor.BROWN) {
-            float[] fs = elHuevoEntity.getClothingColor().getColorComponents();
-            renderModel(this.getContextModel(), SKIN_BROWN, matrixStack, vertexConsumerProvider, i, elHuevoEntity, fs[0], fs[1], fs[2]);
-        } else if (elHuevoEntity.isTamed() && !elHuevoEntity.isInvisible() && elHuevoEntity.getClothingColor() == DyeColor.BLUE) {
-            float[] fs = elHuevoEntity.getClothingColor().getColorComponents();
-            renderModel(this.getContextModel(), SKIN_BLUE, matrixStack, vertexConsumerProvider, i, elHuevoEntity, fs[0], fs[1], fs[2]);
-        } else if (elHuevoEntity.isTamed() && !elHuevoEntity.isInvisible() && elHuevoEntity.getClothingColor() == DyeColor.PURPLE) {
-            float[] fs = elHuevoEntity.getClothingColor().getColorComponents();
-            renderModel(this.getContextModel(), SKIN_PURPLE, matrixStack, vertexConsumerProvider, i, elHuevoEntity, fs[0], fs[1], fs[2]);
-        } else if (elHuevoEntity.isTamed() && !elHuevoEntity.isInvisible() && elHuevoEntity.getClothingColor() == DyeColor.CYAN) {
-            float[] fs = elHuevoEntity.getClothingColor().getColorComponents();
-            renderModel(this.getContextModel(), SKIN_CYAN, matrixStack, vertexConsumerProvider, i, elHuevoEntity, fs[0], fs[1], fs[2]);
-        } else if (elHuevoEntity.isTamed() && !elHuevoEntity.isInvisible() && elHuevoEntity.getClothingColor() == DyeColor.LIGHT_GRAY) {
-            float[] fs = elHuevoEntity.getClothingColor().getColorComponents();
-            renderModel(this.getContextModel(), SKIN_LIGHT_GRAY, matrixStack, vertexConsumerProvider, i, elHuevoEntity, fs[0], fs[1], fs[2]);
-        } else if (elHuevoEntity.isTamed() && !elHuevoEntity.isInvisible() && elHuevoEntity.getClothingColor() == DyeColor.GRAY) {
-            float[] fs = elHuevoEntity.getClothingColor().getColorComponents();
-            renderModel(this.getContextModel(), SKIN_GRAY, matrixStack, vertexConsumerProvider, i, elHuevoEntity, fs[0], fs[1], fs[2]);
-        } else if (elHuevoEntity.isTamed() && !elHuevoEntity.isInvisible() && elHuevoEntity.getClothingColor() == DyeColor.PINK) {
-            float[] fs = elHuevoEntity.getClothingColor().getColorComponents();
-            renderModel(this.getContextModel(), SKIN_PINK, matrixStack, vertexConsumerProvider, i, elHuevoEntity, fs[0], fs[1], fs[2]);
-        } else if (elHuevoEntity.isTamed() && !elHuevoEntity.isInvisible() && elHuevoEntity.getClothingColor() == DyeColor.LIME) {
-            float[] fs = elHuevoEntity.getClothingColor().getColorComponents();
-            renderModel(this.getContextModel(), SKIN_LIME, matrixStack, vertexConsumerProvider, i, elHuevoEntity, fs[0], fs[1], fs[2]);
-        } else if (elHuevoEntity.isTamed() && !elHuevoEntity.isInvisible() && elHuevoEntity.getClothingColor() == DyeColor.YELLOW) {
-            float[] fs = elHuevoEntity.getClothingColor().getColorComponents();
-            renderModel(this.getContextModel(), SKIN_YELLOW, matrixStack, vertexConsumerProvider, i, elHuevoEntity, fs[0], fs[1], fs[2]);
-        } else if (elHuevoEntity.isTamed() && !elHuevoEntity.isInvisible() && elHuevoEntity.getClothingColor() == DyeColor.LIGHT_BLUE) {
-            float[] fs = elHuevoEntity.getClothingColor().getColorComponents();
-            renderModel(this.getContextModel(), SKIN_LIGHT_BLUE, matrixStack, vertexConsumerProvider, i, elHuevoEntity, fs[0], fs[1], fs[2]);
-        } else if (elHuevoEntity.isTamed() && !elHuevoEntity.isInvisible() && elHuevoEntity.getClothingColor() == DyeColor.MAGENTA) {
-            float[] fs = elHuevoEntity.getClothingColor().getColorComponents();
-            renderModel(this.getContextModel(), SKIN_MAGENTA, matrixStack, vertexConsumerProvider, i, elHuevoEntity, fs[0], fs[1], fs[2]);
-        } else if (elHuevoEntity.isTamed() && !elHuevoEntity.isInvisible() && elHuevoEntity.getClothingColor() == DyeColor.ORANGE) {
-            float[] fs = elHuevoEntity.getClothingColor().getColorComponents();
-            renderModel(this.getContextModel(), SKIN_ORANGE, matrixStack, vertexConsumerProvider, i, elHuevoEntity, fs[0], fs[1], fs[2]);
-        } else if (elHuevoEntity.isTamed() && !elHuevoEntity.isInvisible() && elHuevoEntity.getClothingColor() == DyeColor.WHITE) {
-            float[] fs = elHuevoEntity.getClothingColor().getColorComponents();
-            renderModel(this.getContextModel(), SKIN_WHITE, matrixStack, vertexConsumerProvider, i, elHuevoEntity, fs[0], fs[1], fs[2]);
-        }
-
-         */
     }
 }

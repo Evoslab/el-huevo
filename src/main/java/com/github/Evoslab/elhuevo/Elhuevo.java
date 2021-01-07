@@ -15,7 +15,6 @@ import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.BiomeKeys;
-import net.minecraft.world.gen.feature.StructureFeature;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,14 +31,14 @@ public class Elhuevo implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		BiomeModifications.addSpawn(
-				BiomeSelectors.includeByKey(BiomeKeys.ICE_SPIKES, BiomeKeys.SNOWY_TAIGA, BiomeKeys.SNOWY_TAIGA_HILLS, BiomeKeys.SNOWY_TUNDRA),
+				BiomeSelectors.includeByKey(BiomeKeys.ICE_SPIKES, BiomeKeys.SNOWY_TAIGA, BiomeKeys.SNOWY_TAIGA_HILLS, BiomeKeys.SNOWY_TUNDRA, BiomeKeys.SNOWY_TAIGA_MOUNTAINS),
 				SpawnGroup.CREATURE,
 				Elhuevo.EL_HUEVE,
 				5 /* weight */,
 				3 /* minGroupSize */,
 				4 /* maxGroupSize */
 		);
-
+		LOGGER.debug(BiomeKeys.SAVANNA.getValue());
 		FabricDefaultAttributeRegistry.register(EL_HUEVE, ElHuevoEntity.createMobAttributes());
 		Registry.register(Registry.ITEM, new Identifier("elhuevo", "elhueve_spawn_egg"), new SpawnEggItem(EL_HUEVE, 0xFFFFF5, 0x1D2635, new Item.Settings().group(ItemGroup.MISC)));
 		//Registry.register(Registry.STATUS_EFFECT, new Identifier("elhuevo", "egg_charge"), EGGCHARGE);

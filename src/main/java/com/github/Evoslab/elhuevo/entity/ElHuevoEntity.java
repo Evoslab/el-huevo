@@ -33,7 +33,6 @@ public class ElHuevoEntity extends TameableEntity {
         return MobEntity.createMobAttributes().add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.2D).add(EntityAttributes.GENERIC_MAX_HEALTH, 20.0D).add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
     }
 
-    //check here
     public void setTamed(boolean tamed) {
         super.setTamed(tamed);
     }

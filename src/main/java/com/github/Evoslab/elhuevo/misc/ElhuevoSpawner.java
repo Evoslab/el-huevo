@@ -1,22 +1,23 @@
 package com.github.Evoslab.elhuevo.misc;
 
 import com.github.Evoslab.elhuevo.Elhuevo;
+import com.github.Evoslab.elhuevo.api.biomeList;
 import com.github.Evoslab.elhuevo.entity.ElHuevoEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.SpawnRestriction;
-import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.SpawnHelper;
-import net.minecraft.world.gen.CatSpawner;
-import net.minecraft.world.gen.PhantomSpawner;
+import net.minecraft.world.biome.BiomeKeys;
 import net.minecraft.world.gen.Spawner;
 import net.minecraft.world.poi.PointOfInterestStorage;
 import net.minecraft.world.poi.PointOfInterestType;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -69,6 +70,7 @@ public class ElhuevoSpawner implements Spawner {
         return 0;
     }
 
+    // here is where we should call it
     private int spawn(BlockPos pos, ServerWorld world) {
         ElHuevoEntity entity = Elhuevo.EL_HUEVE.create(world);
         if (entity == null) {
