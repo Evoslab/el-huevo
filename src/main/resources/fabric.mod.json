@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "elhuevo",
-  "version": "1.0.0",
+  "version": "1.16.5-1.0.0",
 
   "name": "El Huevo",
   "description": "Adds El Huevo to minecraft!",
@@ -10,7 +10,8 @@
   ],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/El-Huevo-Fabric",
-    "sources": "https://github.com/StevePlayzz/El-Huevo-Fabric"
+    "sources": "https://github.com/StevePlayzz/El-Huevo-Fabric",
+    "issues": "https://github.com/Evoslab/El-Huevo-Fabric/issues"
   },
 
   "license": "MIT",
