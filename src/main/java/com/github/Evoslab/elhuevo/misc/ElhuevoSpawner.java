@@ -6,12 +6,14 @@ import com.github.Evoslab.elhuevo.entity.ElHuevoEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.SpawnRestriction;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.command.LocateBiomeCommand;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.SpawnHelper;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.Spawner;
 import net.minecraft.world.poi.PointOfInterestStorage;
 import net.minecraft.world.poi.PointOfInterestType;
@@ -22,15 +24,8 @@ import java.util.Random;
 public class ElhuevoSpawner implements Spawner {
 
     private int ticksUntilNextSpawn;
-    private final int newTickTime = 60;
+    private final int newTickTime = 600;
 
-    /*
-     * And this is where the magic should happen!
-     * As it stands, this is just a slightly changed
-     * version of CatSpawner. Tweak as you see fit.
-     *
-     * -Sarinsa
-     */
     @Override
     public int spawn(ServerWorld world, boolean spawnMonsters, boolean spawnAnimals) {
         if (spawnAnimals && world.getGameRules().getBoolean(GameRules.DO_MOB_SPAWNING)) {
@@ -46,8 +41,10 @@ public class ElhuevoSpawner implements Spawner {
                     BlockPos blockPos = playerEntity.getBlockPos().add(x, 0, z);
 
                     if (world.isRegionLoaded(blockPos.getX() - 10, blockPos.getY() - 10, blockPos.getZ() - 10, blockPos.getX() + 10, blockPos.getY() + 10, blockPos.getZ() + 10)) {
-                        if (!SpawnBiomes.SNOWY_BIOMES.contains(BuiltinRegistries.BIOME.getId(world.getBiome(blockPos))))
+
+                        if (!SpawnBiomes.isValidBiome(world, world.getBiome(blockPos)))
                             return 0;
+
                         if (SpawnHelper.canSpawn(SpawnRestriction.Location.ON_GROUND, world, blockPos, Elhuevo.EL_HUEVE)) {
                             if (world.isNearOccupiedPointOfInterest(blockPos, 2)) {
                                 return this.spawnInHouse(world, blockPos);
@@ -70,7 +67,6 @@ public class ElhuevoSpawner implements Spawner {
         return 0;
     }
 
-    // here is where we should call itc
     private int spawn(BlockPos pos, ServerWorld world) {
         ElHuevoEntity entity = Elhuevo.EL_HUEVE.create(world);
         if (entity == null) {
