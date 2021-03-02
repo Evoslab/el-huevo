@@ -1,5 +1,10 @@
 package com.github.Evoslab.elhuevo.entity;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.block.Blocks;
+import net.minecraft.client.render.entity.model.ParrotEntityModel;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.*;
@@ -16,6 +21,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,6 +29,8 @@ public class ElHuevoEntity extends TameableEntity {
 
     public static final TrackedData<Integer> CLOTHING_COLOR;
     public static final Ingredient TAMING_INGREDIENT;
+    private boolean songPlaying;
+    private BlockPos songSource;
 
     public ElHuevoEntity(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
@@ -35,6 +43,26 @@ public class ElHuevoEntity extends TameableEntity {
 
     public void setTamed(boolean tamed) {
         super.setTamed(tamed);
+    }
+
+    public void tickMovement() {
+        if (this.songSource == null || !this.songSource.isWithinDistance(this.getPos(), 3.46D) || !this.world.getBlockState(this.songSource).isOf(Blocks.JUKEBOX)) {
+            this.songPlaying = false;
+            this.songSource = null;
+        }
+
+        super.tickMovement();
+    }
+
+    @Environment(EnvType.CLIENT)
+    public void setNearbySongPlaying(BlockPos songPosition, boolean playing) {
+        this.songSource = songPosition;
+        this.songPlaying = playing;
+    }
+
+    @Environment(EnvType.CLIENT)
+    public boolean getSongPlaying() {
+        return this.songPlaying;
     }
 
     @Nullable

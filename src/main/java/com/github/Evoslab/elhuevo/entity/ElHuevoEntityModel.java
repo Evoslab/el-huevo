@@ -4,10 +4,14 @@
 
 package com.github.Evoslab.elhuevo.entity;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.EntityModel;
+import net.minecraft.client.render.entity.model.ParrotEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.passive.ParrotEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.util.math.MathHelper;
 
@@ -103,6 +107,41 @@ public class ElHuevoEntityModel<E extends TameableEntity> extends EntityModel<El
                 this.bb_main = new ModelPart(this);
                 this.bb_main.setPivot(0.0F, 24.0F, 0.0F);
                 this.bb_main.setTextureOffset(0, 18).addCuboid(-3.0F, -8.0F, -2.0F, 6.0F, 8.0F, 5.0F, 0.1F, false);
+                }
+            if (elHuevoEntity.getSongPlaying()) {
+                this.leftleg = new ModelPart(this);
+                this.leftleg.setPivot(-1.5F, 22.5F, 0.5F);
+                this.leftleg.setTextureOffset(22, 6).addCuboid(-1.0F, 0.5F, -1.0F, 2.0F, 1.0F, 2.0F, 0.0F, false);
+
+                this.rightleg = new ModelPart(this);
+                this.rightleg.setPivot(1.5F, 22.5F, 0.5F);
+                this.rightleg.setTextureOffset(22, 9).addCuboid(-1.0F, 0.5F, -1.0F, 2.0F, 1.0F, 2.0F, 0.0F, false);
+
+                this.bodyhead = new ModelPart(this);
+                this.bodyhead.setPivot(0.0F, 18.4F, -0.2F);
+                this.bodyhead.setTextureOffset(0, 13).addCuboid(-2.0F, -0.4F, -2.8F, 4.0F, 2.0F, 1.0F, 0.0F, false);
+                this.bodyhead.setTextureOffset(0, 0).addCuboid(-3.0F, -3.4F, -1.8F, 6.0F, 8.0F, 5.0F, 0.0F, false);
+
+                this.cube_r1 = new ModelPart(this);
+                this.cube_r1.setPivot(-4.0F, -3.4F, 0.2F);
+                this.bodyhead.addChild(cube_r1);
+                this.setRotationAngle(cube_r1, 0.0F, 0.0F, -0.0873F);
+                this.cube_r1.setTextureOffset(26, 0).addCuboid(0.0F, -1.0F, 0.0F, 2.0F, 2.0F, 1.0F, 0.0F, false);
+
+                this.cube_r2 = new ModelPart(this);
+                this.cube_r2.setPivot(4.0F, -3.4F, 0.2F);
+                this.bodyhead.addChild(cube_r2);
+                this.setRotationAngle(cube_r2, 0.0F, 0.0F, 0.0873F);
+                this.cube_r2.setTextureOffset(26, 3).addCuboid(-2.0F, -1.0F, 0.0F, 2.0F, 2.0F, 1.0F, 0.0F, false);
+
+                this.tail = new ModelPart(this);
+                this.tail.setPivot(0.0F, 3.6F, 2.7F);
+                this.bodyhead.addChild(tail);
+                this.tail.setTextureOffset(17, 0).addCuboid(-1.0F, -1.0F, 0.5F, 2.0F, 2.0F, 1.0F, 0.0F, false);
+
+                this.bb_main = new ModelPart(this);
+                this.bb_main.setPivot(0.0F, 24.0F, 0.0F);
+                this.bb_main.setTextureOffset(0, 18).addCuboid(-3.0F, -9.0F, -2.0F, 6.0F, 8.0F, 5.0F, 0.1F, false);
             } else {
                 this.leftleg = new ModelPart(this);
                 this.leftleg.setPivot(-1.5F, 22.5F, 0.5F);
@@ -129,4 +168,5 @@ public class ElHuevoEntityModel<E extends TameableEntity> extends EntityModel<El
                 this.bb_main.setTextureOffset(0, 18).addCuboid(-3.0F, -9.0F, -2.0F, 6.0F, 8.0F, 5.0F, 0.1F, false);
             }
         }
+
 }
