@@ -1,41 +1,30 @@
-package com.github.Evoslab.elhuevo.entity;
+package com.cookiejarmodding.el_huevo.common.entity;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.Blocks;
-import net.minecraft.client.render.entity.model.ParrotEntityModel;
-import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.Nullable;
 
-public class ElHuevoEntity extends TameableEntity {
+public class ElHuevoEntity extends TamableAnimal {
 
     public static final TrackedData<Integer> CLOTHING_COLOR;
     public static final Ingredient TAMING_INGREDIENT;
     private boolean songPlaying;
     private BlockPos songSource;
 
-    public ElHuevoEntity(EntityType<? extends TameableEntity> entityType, World world) {
-        super(entityType, world);
+    public ElHuevoEntity(EntityType<? extends TamableAnimal> entityType, Level level) {
+        super(entityType, level);
         this.setTamed(false);
     }
+
 
     public static DefaultAttributeContainer.Builder createWolfAttributes() {
         return MobEntity.createMobAttributes().add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.2D).add(EntityAttributes.GENERIC_MAX_HEALTH, 20.0D).add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
@@ -181,5 +170,10 @@ public class ElHuevoEntity extends TameableEntity {
         }
     }
 
+    @Nullable
+    @Override
+    public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
+        return null;
+    }
 }
 

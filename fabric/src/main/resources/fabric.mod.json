@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "${id}",
+  "version": "${version}",
+  "name": "${name}",
+  "description": "Adds the egg dog meme to minecraft!",
+  "authors": [ "CookieJar Modding" ],
+  "contributors": [ "Evo", "StevenPlayzz", "Nary" ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/el-huevo",
+	"issues": "https://github.com/CookieJarModding/${repo}/issues",
+    "sources": "https://github.com/CookieJarModding/${repo}/"
+  },
+  "license": "GPLv3",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.cookiejarmodding.el_huevo.core.fabric.ElHuevoFabric"
+    ],
+    "fabric-datagen": [
+      "com.cookiejarmodding.el_huevo.core.fabric.ElHuevoFabricDatagen"
+    ]
+  },
+  "depends": {
+    "fabric": "*",
+    "minecraft": "1.18.x",
+    "pollen": "1.0.0"
+  }
+}
