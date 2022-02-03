@@ -18,13 +18,10 @@ subprojects {
 
 	dependencies {
 		minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
-//		mappings loom.layered() {
-//			officialMojangMappings()
-//			parchment("org.parchmentmc.data:parchment-${rootProject.minecraft_version}:${rootProject.parchment_version}")
-//		}
-		//TODO: Switch back to parchment & mojang mappings b/c gecko is broken and I don't want to fix it atm
-		// It also needs yarn for some dumb reason lmao
-		mappings "net.fabricmc:yarn:1.18.1+build.22:v2"
+		mappings loom.layered() {
+			officialMojangMappings()
+			parchment("org.parchmentmc.data:parchment-${rootProject.minecraft_version}:${rootProject.parchment_version}")
+		}
 	}
 }
 

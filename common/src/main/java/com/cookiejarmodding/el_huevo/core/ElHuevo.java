@@ -1,10 +1,13 @@
 package com.cookiejarmodding.el_huevo.core;
 
-import com.cookiejarmodding.el_huevo.client.render.entity.ElHuevoRender;
+import com.cookiejarmodding.el_huevo.client.render.entity.HuevoRenderer;
+import com.cookiejarmodding.el_huevo.common.entity.Huevo;
 import com.cookiejarmodding.el_huevo.core.registry.ElHuevoEntities;
 import com.cookiejarmodding.el_huevo.core.registry.ElHuevoItems;
 import gg.moonflower.pollen.api.platform.Platform;
+import gg.moonflower.pollen.api.registry.EntityAttributeRegistry;
 import gg.moonflower.pollen.api.registry.client.EntityRendererRegistry;
+import software.bernie.geckolib3.GeckoLib;
 
 public class ElHuevo {
     public static final String MOD_ID = "el_huevo";
@@ -19,7 +22,8 @@ public class ElHuevo {
     public static void onClientInit() {}
 
     public static void onClientPostInit(Platform.ModSetupContext ctx) {
-        EntityRendererRegistry.register(ElHuevoEntities.EL_HUEVO, ElHuevoRender::new);
+        EntityRendererRegistry.register(ElHuevoEntities.HUEVO, HuevoRenderer::new);
+        EntityAttributeRegistry.register(ElHuevoEntities.HUEVO, Huevo::createAttributes);
     }
 
     public static void onCommonInit() {

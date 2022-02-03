@@ -10,7 +10,8 @@ dependencies {
 
     modApi("gg.moonflower:pollen:${rootProject.pollen_version}") { transitive = false }
     // ONLY use fabric, to not cause problems
-    modImplementation "software.bernie.geckolib:geckolib-fabric-1.18:3.0.32"
+//    modImplementation "software.bernie.geckolib:geckolib-fabric-1.18:3.0.32"
+    modCompileOnly("curse.maven:geckolib-388172:3629661"){ transitive = false }
 }
 
 architectury {

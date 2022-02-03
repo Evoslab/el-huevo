@@ -1,6 +1,6 @@
 package com.cookiejarmodding.el_huevo.common.misc;
 
-import com.cookiejarmodding.el_huevo.common.entity.ElHuevoEntity;
+import com.cookiejarmodding.el_huevo.common.entity.Huevo;
 import com.cookiejarmodding.el_huevo.core.api.SpawnBiomes;
 import com.cookiejarmodding.el_huevo.core.registry.ElHuevoEntities;
 import net.minecraft.core.BlockPos;
@@ -41,7 +41,7 @@ public class ElHuevoSpawner implements CustomSpawner {
                         if (!SpawnBiomes.isValidBiome(level, level.getBiome(pos)))
                             return 0;
 
-                        if (NaturalSpawner.isSpawnPositionOk(SpawnPlacements.Type.ON_GROUND, level, pos, ElHuevoEntities.EL_HUEVO.get())) {
+                        if (NaturalSpawner.isSpawnPositionOk(SpawnPlacements.Type.ON_GROUND, level, pos, ElHuevoEntities.HUEVO.get())) {
                             if (level.isCloseToVillage(pos, 2)) {
                                 return this.spawnInHouse(level, pos);
                             }
@@ -55,7 +55,7 @@ public class ElHuevoSpawner implements CustomSpawner {
 
     private int spawnInHouse(ServerLevel level, BlockPos pos) {
         if (level.getPoiManager().getCountInRange(PoiType.HOME.getPredicate(), pos, 48, PoiManager.Occupancy.IS_OCCUPIED) > 4L) {
-            List<ElHuevoEntity> list = level.getEntitiesOfClass(ElHuevoEntity.class, (new AABB(pos)).inflate(48.0D, 8.0D, 48.0D));
+            List<Huevo> list = level.getEntitiesOfClass(Huevo.class, (new AABB(pos)).inflate(48.0D, 8.0D, 48.0D));
             if (list.size() < 5) {
                 return this.spawn(pos, level);
             }
@@ -64,7 +64,7 @@ public class ElHuevoSpawner implements CustomSpawner {
     }
 
     private int spawn(BlockPos pos, ServerLevel level) {
-        ElHuevoEntity entity = ElHuevoEntities.EL_HUEVO.get().create(level);
+        Huevo entity = ElHuevoEntities.HUEVO.get().create(level);
         if (entity == null) {
             return 0;
         } else {
