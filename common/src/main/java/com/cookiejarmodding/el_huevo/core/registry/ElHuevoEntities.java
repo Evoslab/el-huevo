@@ -15,8 +15,8 @@ public class ElHuevoEntities {
     public static final Supplier<EntityType<Huevo>> HUEVO = ENTITY_TYPES.register(
             "huevo", () -> EntityType.Builder
                     .of(Huevo::new, MobCategory.MISC)
-                    .sized(0.75f, 0.75f)
-                    .clientTrackingRange(8)
+                    .sized(0.75F, 0.75F)
+                    .clientTrackingRange(16)
                     .build("huevo")
     );
 }

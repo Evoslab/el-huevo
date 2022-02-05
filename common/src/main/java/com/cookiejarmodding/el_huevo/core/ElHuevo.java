@@ -7,7 +7,7 @@ import com.cookiejarmodding.el_huevo.core.registry.ElHuevoItems;
 import gg.moonflower.pollen.api.platform.Platform;
 import gg.moonflower.pollen.api.registry.EntityAttributeRegistry;
 import gg.moonflower.pollen.api.registry.client.EntityRendererRegistry;
-import software.bernie.geckolib3.GeckoLib;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public class ElHuevo {
     public static final String MOD_ID = "el_huevo";
@@ -19,17 +19,18 @@ public class ElHuevo {
             .dataInit(ElHuevo::onDataInit)
             .build();
 
-    public static void onClientInit() {}
+    public static void onClientInit() {
+        EntityRendererRegistry.register(ElHuevoEntities.HUEVO, HuevoRenderer::new);
+    }
 
     public static void onClientPostInit(Platform.ModSetupContext ctx) {
-        EntityRendererRegistry.register(ElHuevoEntities.HUEVO, HuevoRenderer::new);
-        EntityAttributeRegistry.register(ElHuevoEntities.HUEVO, Huevo::createAttributes);
     }
 
     public static void onCommonInit() {
-        GeckoLib.initialize();
-        ElHuevoEntities.ENTITY_TYPES.register(PLATFORM);
         ElHuevoItems.ITEMS.register(PLATFORM);
+        ElHuevoEntities.ENTITY_TYPES.register(PLATFORM);
+
+        EntityAttributeRegistry.register(ElHuevoEntities.HUEVO, () -> Huevo.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.2).add(Attributes.MAX_HEALTH, 8.5));
     }
 
     public static void onCommonPostInit(Platform.ModSetupContext ctx) {

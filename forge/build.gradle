@@ -58,7 +58,7 @@ dependencies {
     forge "net.minecraftforge:forge:${rootProject.minecraft_version}-${rootProject.forge_version}"
 
     modApi("gg.moonflower:pollen-forge:${rootProject.pollen_version}") { transitive = false }
-//    modImplementation "software.bernie.geckolib:geckolib-forge-1.18:${rootProject.geckolib_version}"
+    modImplementation("software.bernie.geckolib:geckolib-1.18-forge:3.0.11") { transitive = false }
 
     modRuntimeOnly "curse.maven:configured-457570:3559398"
     modRuntimeOnly "curse.maven:catalogue-459701:3559402"
