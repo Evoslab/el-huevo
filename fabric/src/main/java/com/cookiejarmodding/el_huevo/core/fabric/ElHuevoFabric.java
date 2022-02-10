@@ -6,7 +6,6 @@ import net.fabricmc.api.ModInitializer;
 public class ElHuevoFabric implements ModInitializer {
     @Override
     public void onInitialize() {
-//        GeckoLib.initialize();
         ElHuevo.PLATFORM.setup();
     }
 }

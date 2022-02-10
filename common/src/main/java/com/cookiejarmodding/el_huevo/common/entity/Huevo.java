@@ -1,11 +1,16 @@
 package com.cookiejarmodding.el_huevo.common.entity;
 
+import com.cookiejarmodding.el_huevo.core.ElHuevo;
 import gg.moonflower.pollen.api.util.NbtConstants;
+import gg.moonflower.pollen.pinwheel.api.common.animation.AnimatedEntity;
+import gg.moonflower.pollen.pinwheel.api.common.animation.AnimationEffectHandler;
+import gg.moonflower.pollen.pinwheel.api.common.animation.AnimationState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -34,9 +39,7 @@ import java.util.Objects;
 
 //TODO needs a lot of work
 // Make huevo dance, fall
-// Make classes/methods/fields follow mojamps methods and names
-public class Huevo extends TamableAnimal implements IAnimatable {
-    private final AnimationFactory factory = new AnimationFactory(this);
+public class Huevo extends TamableAnimal implements AnimatedEntity {
     private static final EntityDataAccessor<Integer> DATA_CLOTHING_COLOR = SynchedEntityData.defineId(Huevo.class, EntityDataSerializers.INT);
 
     public Huevo(EntityType<? extends Huevo> entityType, Level level) {
@@ -204,11 +207,6 @@ public class Huevo extends TamableAnimal implements IAnimatable {
         return new Vec3(0.0D, 0.6F * this.getEyeHeight(), this.getBbWidth() * 0.4F);
     }
 
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
-    }
-
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (event.isMoving())
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.huevo.walk", true));
@@ -217,8 +215,32 @@ public class Huevo extends TamableAnimal implements IAnimatable {
         return PlayState.CONTINUE;
     }
 
+
     @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController<>(this, "controller", 2, this::predicate));
+    public int getAnimationTick() {
+        return 2;
+    }
+
+    @Override
+    public void setAnimationTick(int tick) {
+    }
+
+    @Override
+    public AnimationState getAnimationState() {
+        return new AnimationState(1, new ResourceLocation(ElHuevo.MOD_ID, "animation.huevo.idle"));
+    }
+
+    @Override
+    public void setAnimationState(AnimationState state) {
+    }
+
+    @Override
+    public @Nullable AnimationEffectHandler getAnimationEffects() {
+        return null;
+    }
+
+    @Override
+    public AnimationState[] getAnimationStates() {
+        return new AnimationState[0];
     }
 }
