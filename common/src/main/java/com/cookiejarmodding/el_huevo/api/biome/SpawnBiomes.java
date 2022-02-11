@@ -1,4 +1,4 @@
-package com.cookiejarmodding.el_huevo.core.api;
+package com.cookiejarmodding.el_huevo.api.biome;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.WritableRegistry;

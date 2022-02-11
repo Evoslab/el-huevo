@@ -1,7 +1,7 @@
 package com.cookiejarmodding.el_huevo.common.misc;
 
 import com.cookiejarmodding.el_huevo.common.entity.Huevo;
-import com.cookiejarmodding.el_huevo.core.api.SpawnBiomes;
+import com.cookiejarmodding.el_huevo.api.biome.SpawnBiomes;
 import com.cookiejarmodding.el_huevo.core.registry.ElHuevoEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

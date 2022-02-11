@@ -27,24 +27,28 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.Objects;
+import java.util.stream.Stream;
 
-//TODO needs a lot of work
-// Make huevo dance, fall
+// TODO Make huevo dance, fall, add custom sounds, etc.
 public class Huevo extends TamableAnimal implements AnimatedEntity {
+    public static final AnimationState WALK = new AnimationState(20, new ResourceLocation(ElHuevo.MOD_ID, "huevo.walk"));
+    public static final AnimationState IDLE = new AnimationState(40, new ResourceLocation(ElHuevo.MOD_ID, "huevo.idle"));
+    private static final AnimationState[] ANIMATIONS = Stream.of(WALK, IDLE).toArray(AnimationState[]::new);
+
     private static final EntityDataAccessor<Integer> DATA_CLOTHING_COLOR = SynchedEntityData.defineId(Huevo.class, EntityDataSerializers.INT);
+
+    private final AnimationEffectHandler effectHandler;
+    private AnimationState animationState;
+    private int animationTick;
 
     public Huevo(EntityType<? extends Huevo> entityType, Level level) {
         super(entityType, level);
         this.setTame(false);
+        this.xpReward = 35;
+        this.effectHandler = new AnimationEffectHandler(this);
+        this.animationState = AnimationState.EMPTY;
     }
 
     @Override
@@ -58,12 +62,29 @@ public class Huevo extends TamableAnimal implements AnimatedEntity {
     }
 
     @Override
+    public boolean isImmobile() {
+        return !this.isNoAnimationPlaying();
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        this.animationTick();
+    }
+
+    @Override
+    public void setAnimationState(AnimationState state) {
+        this.onAnimationStop(this.animationState);
+        this.animationState = state;
+        this.setAnimationTick(0);
+    }
+
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DATA_CLOTHING_COLOR, DyeColor.RED.getId());
     }
 
-    //TODO: add custom sounds
     @Override
     protected void playStepSound(BlockPos pos, BlockState block) {
         this.playSound(SoundEvents.WOLF_STEP, 0.15F, 1.0F);
@@ -207,40 +228,28 @@ public class Huevo extends TamableAnimal implements AnimatedEntity {
         return new Vec3(0.0D, 0.6F * this.getEyeHeight(), this.getBbWidth() * 0.4F);
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (event.isMoving())
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.huevo.walk", true));
-        else
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.huevo.idle", true));
-        return PlayState.CONTINUE;
-    }
-
-
     @Override
     public int getAnimationTick() {
-        return 2;
-    }
-
-    @Override
-    public void setAnimationTick(int tick) {
+        return this.animationTick;
     }
 
     @Override
     public AnimationState getAnimationState() {
-        return new AnimationState(1, new ResourceLocation(ElHuevo.MOD_ID, "animation.huevo.idle"));
+        return this.animationState;
     }
 
     @Override
-    public void setAnimationState(AnimationState state) {
+    public AnimationEffectHandler getAnimationEffects() {
+        return effectHandler;
     }
 
     @Override
-    public @Nullable AnimationEffectHandler getAnimationEffects() {
-        return null;
+    public void setAnimationTick(int animationTick) {
+        this.animationTick = animationTick;
     }
 
     @Override
     public AnimationState[] getAnimationStates() {
-        return new AnimationState[0];
+        return ANIMATIONS;
     }
 }

@@ -30,7 +30,6 @@ public class ElHuevo {
         ElHuevoItems.ITEMS.register(PLATFORM);
         ElHuevoEntities.ENTITY_TYPES.register(PLATFORM);
 
-//        EntityRendererRegistry.registerLayerDefinition(MannequinsModelLayers.STATUE, StatueModel::createLayerDefinition);
         EntityAttributeRegistry.register(ElHuevoEntities.HUEVO, () -> Huevo.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.2).add(Attributes.MAX_HEALTH, 8.5));
     }
 

@@ -1,0 +1,8 @@
+{
+  "textures": [
+    {
+      "type": "location",
+      "texture": "el_huevo:textures/entity/huevo/huevo_default.png"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"animation.huevo.walk": {
+		"huevo.walk": {
 			"loop": true,
 			"animation_length": 1,
 			"bones": {
@@ -34,7 +34,7 @@
 				}
 			}
 		},
-		"animation.huevo.idle": {
+		"huevo.idle": {
 			"loop": true,
 			"animation_length": 2,
 			"bones": {
@@ -47,7 +47,7 @@
 				}
 			}
 		},
-		"animation.huevo.fall": {
+		"huevo.fall": {
 			"loop": true,
 			"animation_length": 1.5,
 			"bones": {
