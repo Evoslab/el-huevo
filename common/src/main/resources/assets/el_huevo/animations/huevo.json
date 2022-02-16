@@ -39,7 +39,7 @@
 			"animation_length": 2,
 			"bones": {
 				"bodyhead": {
-					"rotation": ["Math.sin (query.anim_time * 180) * 1", 0, 0],
+					"rotation": ["Math.sin(query.anim_time * 180) * 1", 0, 0],
 					"position": [0, "-0.2 + Math.cos(query.anim_time * 180) * 0.08 ", 0]
 				},
 				"tail": {

@@ -2,7 +2,7 @@
   "textures": [
     {
       "type": "location",
-      "texture": "el_huevo:textures/entity/huevo/huevo_default.png"
+      "texture": "el_huevo:entity/huevo/huevo_default"
     }
   ]
 }

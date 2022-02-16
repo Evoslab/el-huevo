@@ -32,7 +32,7 @@ public class HuevoRenderer extends AnimatedEntityRenderer<Huevo> {
         return HUEVO_LOCATION;
     }
 
-    //    @Override
+//    @Override
 //    public ResourceLocation getTextureTableLocation(Huevo entity) {
 //        if (entity.isTame())
 //            return switch (entity.getClothingColor()) {
