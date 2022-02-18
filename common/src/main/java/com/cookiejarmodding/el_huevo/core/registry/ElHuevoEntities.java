@@ -1,6 +1,7 @@
 package com.cookiejarmodding.el_huevo.core.registry;
 
 import com.cookiejarmodding.el_huevo.common.entity.Huevo;
+import com.cookiejarmodding.el_huevo.common.entity.Yeti;
 import com.cookiejarmodding.el_huevo.core.ElHuevo;
 import gg.moonflower.pollen.api.item.SpawnEggItemBase;
 import gg.moonflower.pollen.api.registry.PollinatedRegistry;
@@ -18,6 +19,7 @@ public class ElHuevoEntities {
     public static final PollinatedRegistry<EntityType<?>> ENTITY_TYPES = PollinatedRegistry.create(Registry.ENTITY_TYPE, ElHuevo.MOD_ID);
 
     public static final Supplier<EntityType<Huevo>> HUEVO = register("huevo", EntityType.Builder.of(Huevo::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(16), 0xFFFFF5, 0x1D2635);
+    public static final Supplier<EntityType<Yeti>> YETI = register("yeti", EntityType.Builder.of(Yeti::new, MobCategory.MONSTER).sized(1.4F, 2.7F).clientTrackingRange(10), 0x577B8A, 0xFAFAFA);
 
     /**
      * Registers a new entity with an egg under the specified id.
