@@ -1,8 +1,7 @@
 {
-  "textures": [
-    {
-      "type": "location",
-      "texture": "el_huevo:entity/huevo/huevo_default"
-    }
-  ]
+  "texture": {
+    "type": "location",
+    "texture": "el_huevo:entity/huevo",
+    "layer": "cutout"
+  }
 }

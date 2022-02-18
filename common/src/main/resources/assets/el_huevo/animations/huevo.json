@@ -81,6 +81,20 @@
 					}
 				}
 			}
+		},
+		"huevo.setup": {
+			"loop": true,
+			"bones": {
+				"bodyhead": {
+					"rotation": ["q.head_x_rotation", "q.head_y_rotation", 0]
+				},
+				"rightleg": {
+					"rotation": ["1.5 * math.triangle_wave(q.limb_swing, 13.0) * q.limb_swing_amount * 180 / math.pi", 0, 0]
+				},
+				"leftleg": {
+					"rotation": ["-1.5 * math.triangle_wave(q.limb_swing, 13.0) * q.limb_swing_amount * 180 / math.pi", 0, 0]
+				}
+			}
 		}
 	}
 }
