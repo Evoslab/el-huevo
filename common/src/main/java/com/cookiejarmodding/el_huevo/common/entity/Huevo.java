@@ -1,6 +1,7 @@
 package com.cookiejarmodding.el_huevo.common.entity;
 
 import com.cookiejarmodding.el_huevo.core.ElHuevo;
+import gg.moonflower.pollen.api.entity.PollenEntity;
 import gg.moonflower.pollen.api.util.NbtConstants;
 import gg.moonflower.pollen.pinwheel.api.common.animation.AnimatedEntity;
 import gg.moonflower.pollen.pinwheel.api.common.animation.AnimationEffectHandler;
@@ -32,7 +33,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 // TODO Make huevo dance, fall, add custom sounds, etc.
-public class Huevo extends TamableAnimal implements AnimatedEntity {
+public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity {
     public static final AnimationState WALK = new AnimationState(20, new ResourceLocation(ElHuevo.MOD_ID, "huevo.walk"));
     public static final AnimationState IDLE = new AnimationState(40, new ResourceLocation(ElHuevo.MOD_ID, "huevo.idle"));
     private static final AnimationState[] ANIMATIONS = Stream.of(WALK, IDLE).toArray(AnimationState[]::new);
@@ -71,6 +72,8 @@ public class Huevo extends TamableAnimal implements AnimatedEntity {
         super.tick();
         this.animationTick();
     }
+
+
 
     @Override
     public void setAnimationState(AnimationState state) {
@@ -246,6 +249,11 @@ public class Huevo extends TamableAnimal implements AnimatedEntity {
     @Override
     public void setAnimationTick(int animationTick) {
         this.animationTick = animationTick;
+    }
+
+    @Override
+    public AnimationState getIdleAnimationState() {
+        return IDLE;
     }
 
     @Override

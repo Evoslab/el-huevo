@@ -2,22 +2,35 @@ package com.cookiejarmodding.el_huevo.client.render.entity;
 
 import com.cookiejarmodding.el_huevo.common.entity.Huevo;
 import com.cookiejarmodding.el_huevo.core.ElHuevo;
+import com.mojang.blaze3d.vertex.PoseStack;
 import gg.moonflower.pollen.pinwheel.api.client.animation.AnimatedEntityRenderer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 /**
  * @author StevenPlayzz
  */
 @Environment(EnvType.CLIENT)
 public class HuevoRenderer extends AnimatedEntityRenderer<Huevo> {
-    private static final ResourceLocation[] DEFAULT_ANIMATIONS = new ResourceLocation[]{new ResourceLocation(ElHuevo.MOD_ID, "huevo.walk"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.idle")};
+    private static final ResourceLocation[] DEFAULT_ANIMATIONS = new ResourceLocation[]{new ResourceLocation(ElHuevo.MOD_ID, "huevo.idle")};
     private static final ResourceLocation HUEVO_LOCATION = new ResourceLocation(ElHuevo.MOD_ID, "huevo");
+    private boolean isMoving;
 
     public HuevoRenderer(EntityRendererProvider.Context context) {
         super(context, new ResourceLocation(ElHuevo.MOD_ID, "huevo"), 0.4F);
+    }
+
+    @Override
+    protected void setupRotations(Huevo entityLiving, PoseStack matrixStack, float ageInTicks, float rotationYaw, float partialTicks) {
+        super.setupRotations(entityLiving, matrixStack, ageInTicks, rotationYaw, partialTicks);
+        if (entityLiving.getAnimationState() == Huevo.WALK) {
+            matrixStack.translate(Math.sin(entityLiving.getAnimationTick() * 0.1F) * 0.05F, 0.0F, 0.0F);
+
+        }
     }
 
     @Override
@@ -28,7 +41,26 @@ public class HuevoRenderer extends AnimatedEntityRenderer<Huevo> {
     }
 
     @Override
-    public ResourceLocation getTextureTableLocation(Huevo yeti) {
+    public void render(Huevo entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource bufferIn, int packedLightIn) {
+        stack.pushPose();
+        boolean shouldSit = entity.isPassenger() && (entity.getVehicle() != null && entity.shouldRiderSit());
+
+        float limbSwingAmount = 0.0F;
+        if (!shouldSit && entity.isAlive()) {
+            limbSwingAmount = Mth.lerp(partialTicks, entity.animationSpeedOld, entity.animationSpeed);
+
+            if (limbSwingAmount > 1.0F) {
+                limbSwingAmount = 1.0F;
+            }
+        }
+
+        isMoving = !(limbSwingAmount > -0.15F && limbSwingAmount < 0.15F);
+        stack.popPose();
+        super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
+    }
+
+    @Override
+    public ResourceLocation getTextureTableLocation(Huevo entity) {
         return HUEVO_LOCATION;
     }
 
