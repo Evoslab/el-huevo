@@ -9,7 +9,6 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
 
     modApi("gg.moonflower:pollen:${rootProject.pollen_version}") { transitive = false }
-    modCompileOnly("software.bernie.geckolib:geckolib-1.18-forge:3.0.11") { transitive = false }
 }
 
 architectury {
