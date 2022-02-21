@@ -1,7 +1,7 @@
 package com.cookiejarmodding.el_huevo.common.misc;
 
-import com.cookiejarmodding.el_huevo.common.entity.Huevo;
 import com.cookiejarmodding.el_huevo.api.biome.SpawnBiomes;
+import com.cookiejarmodding.el_huevo.common.entity.Huevo;
 import com.cookiejarmodding.el_huevo.core.registry.ElHuevoEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -18,6 +18,9 @@ import net.minecraft.world.phys.AABB;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * @author Sarinsa, StevenPlayzz
+ */
 public class ElHuevoSpawner implements CustomSpawner {
     private int ticksUntilNextSpawn;
 

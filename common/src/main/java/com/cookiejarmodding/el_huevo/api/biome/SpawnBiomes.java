@@ -10,6 +10,9 @@ import net.minecraft.world.level.biome.Biomes;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Sarinsa, StevenPlayzz
+ */
 @SuppressWarnings("unused")
 public class SpawnBiomes {
     private static final List<ResourceLocation> SNOWY_BIOMES = new ArrayList<>();

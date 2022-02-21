@@ -16,33 +16,32 @@ import net.minecraft.util.Mth;
  */
 @Environment(EnvType.CLIENT)
 public class HuevoRenderer extends AnimatedEntityRenderer<Huevo> {
-    private static final ResourceLocation[] DEFAULT_ANIMATIONS = new ResourceLocation[]{new ResourceLocation(ElHuevo.MOD_ID, "huevo.idle")};
+    private static final ResourceLocation[] IDLE_ANIMATION = new ResourceLocation[]{new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.idle")};
+    private static final ResourceLocation[] WALK_ANIMATION = new ResourceLocation[]{new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.walk")};
     private static final ResourceLocation HUEVO_LOCATION = new ResourceLocation(ElHuevo.MOD_ID, "huevo");
-    private boolean isMoving;
 
+    private boolean isMoving = true;
     public HuevoRenderer(EntityRendererProvider.Context context) {
         super(context, new ResourceLocation(ElHuevo.MOD_ID, "huevo"), 0.4F);
     }
 
     @Override
-    protected void setupRotations(Huevo entityLiving, PoseStack matrixStack, float ageInTicks, float rotationYaw, float partialTicks) {
-        super.setupRotations(entityLiving, matrixStack, ageInTicks, rotationYaw, partialTicks);
-        if (entityLiving.getAnimationState() == Huevo.WALK) {
-            matrixStack.translate(Math.sin(entityLiving.getAnimationTick() * 0.1F) * 0.05F, 0.0F, 0.0F);
-
-        }
-    }
-
-    @Override
     public ResourceLocation[] getAnimations(Huevo entity) {
-        if (entity.isNoAnimationPlaying())
-            return DEFAULT_ANIMATIONS;
+        if (isMoving)
+            return WALK_ANIMATION;
+        else if (entity.isNoAnimationPlaying())
+            return IDLE_ANIMATION;
         return super.getAnimations(entity);
     }
 
     @Override
-    public void render(Huevo entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource bufferIn, int packedLightIn) {
-        stack.pushPose();
+    public ResourceLocation getTextureTableLocation(Huevo entity) {
+        return HUEVO_LOCATION;
+    }
+
+    @Override
+    public void render(Huevo entity, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int packedLight) {
+        matrixStack.pushPose();
         boolean shouldSit = entity.isPassenger() && (entity.getVehicle() != null && entity.shouldRiderSit());
 
         float limbSwingAmount = 0.0F;
@@ -53,39 +52,35 @@ public class HuevoRenderer extends AnimatedEntityRenderer<Huevo> {
                 limbSwingAmount = 1.0F;
             }
         }
-
-        isMoving = !(limbSwingAmount > -0.15F && limbSwingAmount < 0.15F);
-        stack.popPose();
-        super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
+        this.isMoving = !(limbSwingAmount > -0.15F && limbSwingAmount < 0.15F);
+        matrixStack.popPose();
+        super.render(entity, entityYaw, partialTicks, matrixStack, buffer, packedLight);
     }
 
-    @Override
-    public ResourceLocation getTextureTableLocation(Huevo entity) {
-        return HUEVO_LOCATION;
-    }
-
-//    @Override
-//    public ResourceLocation getTextureTableLocation(Huevo entity) {
-//        if (entity.isTame())
-//            return switch (entity.getClothingColor()) {
-//                case RED -> new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_red.png");
-//                case BLUE -> new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_blue.png");
-//                case CYAN -> new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_cyan.png");
-//                case GRAY -> new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_gray.png");
-//                case LIME -> new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_lime.png");
-//                case PINK -> new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_pink.png");
-//                case BLACK -> new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_black.png");
-//                case BROWN -> new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_brown.png");
-//                case GREEN -> new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_green.png");
-//                case ORANGE -> new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_orange.png");
-//                case PURPLE -> new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_purple.png");
-//                case YELLOW -> new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_yellow.png");
-//                case MAGENTA -> new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_magenta.png");
-//                case LIGHT_BLUE -> new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_light_blue.png");
-//                case LIGHT_GRAY -> new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_light_gray.png");
-//                default -> new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_white.png");
-//            };
+    //    @Override
+//    protected void setupRotations(Huevo entityLiving, PoseStack matrixStack, float ageInTicks, float rotationYaw, float partialTicks) {
+//        super.setupRotations(entityLiving, matrixStack, ageInTicks, rotationYaw, partialTicks);
+//        if (entityLiving.isTame()) {
+//            switch (entityLiving.getClothingColor()) {
+//                case RED -> this.model.setTexture(new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_red.png"));
+//                case BLUE -> this.model.setTexture(new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_blue.png"));
+//                case CYAN -> this.model.setTexture(new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_cyan.png"));
+//                case GRAY -> this.model.setTexture(new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_gray.png"));
+//                case LIME -> this.model.setTexture(new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_lime.png"));
+//                case PINK -> this.model.setTexture(new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_pink.png"));
+//                case BLACK -> this.model.setTexture(new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_black.png"));
+//                case BROWN -> this.model.setTexture(new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_brown.png"));
+//                case GREEN -> this.model.setTexture(new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_green.png"));
+//                case ORANGE -> this.model.setTexture(new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_orange.png"));
+//                case PURPLE -> this.model.setTexture(new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_purple.png"));
+//                case YELLOW -> this.model.setTexture(new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_yellow.png"));
+//                case MAGENTA -> this.model.setTexture(new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_magenta.png"));
+//                case LIGHT_BLUE -> this.model.setTexture(new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_light_blue.png"));
+//                case LIGHT_GRAY -> this.model.setTexture(new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_light_gray.png"));
+//                default -> this.model.setTexture(new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_white.png"));
+//            }
+//        }
 //        else
-//            return new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_default.png");
+//            this.model.setTexture(new ResourceLocation(ElHuevo.MOD_ID, "textures/entity/huevo/huevo_default.png"));
 //    }
 }

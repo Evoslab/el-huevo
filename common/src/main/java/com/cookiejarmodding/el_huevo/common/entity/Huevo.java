@@ -33,9 +33,13 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 // TODO Make huevo dance, fall, add custom sounds, etc.
+
+/**
+ * @author StevenPlayzz
+ */
 public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity {
-    public static final AnimationState WALK = new AnimationState(20, new ResourceLocation(ElHuevo.MOD_ID, "huevo.walk"));
-    public static final AnimationState IDLE = new AnimationState(40, new ResourceLocation(ElHuevo.MOD_ID, "huevo.idle"));
+    public static final AnimationState WALK = new AnimationState(20, new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.walk"));
+    public static final AnimationState IDLE = new AnimationState(40, new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.idle"));
     private static final AnimationState[] ANIMATIONS = Stream.of(WALK, IDLE).toArray(AnimationState[]::new);
 
     private static final EntityDataAccessor<Integer> DATA_CLOTHING_COLOR = SynchedEntityData.defineId(Huevo.class, EntityDataSerializers.INT);
@@ -72,8 +76,6 @@ public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity
         super.tick();
         this.animationTick();
     }
-
-
 
     @Override
     public void setAnimationState(AnimationState state) {

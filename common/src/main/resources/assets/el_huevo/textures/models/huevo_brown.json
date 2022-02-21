@@ -1,7 +1,0 @@
-{
-  "texture": {
-    "type": "location",
-    "texture": "el_huevo:entity/huevo/huevo_brown",
-    "layer": "cutout"
-  }
-}

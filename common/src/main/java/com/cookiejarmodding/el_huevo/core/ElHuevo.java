@@ -1,9 +1,7 @@
 package com.cookiejarmodding.el_huevo.core;
 
 import com.cookiejarmodding.el_huevo.client.render.entity.HuevoRenderer;
-import com.cookiejarmodding.el_huevo.client.render.entity.YetiRenderer;
 import com.cookiejarmodding.el_huevo.common.entity.Huevo;
-import com.cookiejarmodding.el_huevo.common.entity.Yeti;
 import com.cookiejarmodding.el_huevo.core.registry.ElHuevoEntities;
 import com.cookiejarmodding.el_huevo.core.registry.ElHuevoItems;
 import gg.moonflower.pollen.api.platform.Platform;
@@ -23,7 +21,6 @@ public class ElHuevo {
 
     public static void onClientInit() {
         EntityRendererRegistry.register(ElHuevoEntities.HUEVO, HuevoRenderer::new);
-        EntityRendererRegistry.register(ElHuevoEntities.YETI, YetiRenderer::new);
     }
 
     public static void onClientPostInit(Platform.ModSetupContext ctx) {
@@ -34,7 +31,6 @@ public class ElHuevo {
         ElHuevoEntities.ENTITY_TYPES.register(PLATFORM);
 
         EntityAttributeRegistry.register(ElHuevoEntities.HUEVO, () -> Huevo.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.2).add(Attributes.MAX_HEALTH, 8.5));
-        EntityAttributeRegistry.register(ElHuevoEntities.YETI, Yeti::createAttributes);
     }
 
     public static void onCommonPostInit(Platform.ModSetupContext ctx) {
