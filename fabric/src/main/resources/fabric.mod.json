@@ -3,27 +3,28 @@
   "id": "${id}",
   "version": "${version}",
   "name": "${name}",
-  "description": "Adds the egg dog meme to minecraft!",
-  "authors": [ "CookieJar Modding" ],
-  "contributors": [ "Evo", "StevenPlayzz", "Nary" ],
+  "description": "Legendary egg dogs all around!",
+  "authors": [ "Cookiejar" ],
+  "contributors": [ "Steven", "Evo" ],
   "contact": {
-    "homepage": "https://www.curseforge.com/minecraft/mc-mods/el-huevo",
-	"issues": "https://github.com/CookieJarModding/${repo}/issues",
-    "sources": "https://github.com/CookieJarModding/${repo}/"
+    "homepage": "https://discord.gg/3b8xDvJA7a",
+    "issues": "https://github.com/CookiejarTeam/${repo}/issues",
+    "sources": "https://github.com/CookiejarTeam/${repo}/"
   },
+  "icon": "icon.png",
   "license": "GPLv3",
   "environment": "*",
+  "mixins": [
+    "${id}-common.mixins.json",
+    "${id}.mixins.json"
+  ],
   "entrypoints": {
     "main": [
-      "com.cookiejarmodding.el_huevo.core.fabric.ElHuevoFabric"
-    ],
-    "fabric-datagen": [
-      "com.cookiejarmodding.el_huevo.core.fabric.ElHuevoFabricDatagen"
+      "gg.cookiejar.el_huevo.core.fabric.ElHuevoFabric"
     ]
   },
   "depends": {
-    "fabric": "*",
     "minecraft": "1.18.x",
-    "pollen": "1.0.0"
+    "pollen": "1.x"
   }
 }

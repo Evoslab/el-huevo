@@ -1,18 +1,20 @@
 modLoader = "javafml"
-loaderVersion = "[39,)"
-issueTrackerURL = "https://github.com/MoonflowerTeam/${repo}/issues"
+loaderVersion = "[36,)"
+issueTrackerURL = "https://github.com/CookiejarTeam/${repo}/issues"
 license = "GPLv3"
 
 [[mods]]
 modId = "${id}"
 version = "${version}"
 displayName = "${name}"
-authors = "Moonflower"
-credits = "An author, another author, and the last author."
-description = "This is an example starter template."
-displayURL = "https://www.moonflower.gg"
-#updateJSONURL = ""
-#logoFile = ""
+authors = "Cookiejar"
+credits = "Steven, Evo"
+description = "Legendary egg dogs all around!"
+displayURL = "https://discord.gg/3b8xDvJA7a"
+logoFile = "logo.png"
+
+[modproperties.${id}]
+catalogueImageIcon="icon.png"
 
 [[dependencies.${id}]]
 modId = "forge"

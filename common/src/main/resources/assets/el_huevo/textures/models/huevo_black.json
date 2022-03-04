@@ -1,0 +1,7 @@
+{
+  "texture": {
+    "type": "location",
+    "texture": "el_huevo:entity/huevo/huevo_black",
+    "layer": "cutout"
+  }
+}

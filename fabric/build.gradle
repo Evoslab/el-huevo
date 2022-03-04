@@ -12,29 +12,10 @@ architectury {
     fabric()
 }
 
-def generatedResources = file("src/generated/resources")
-def accessWidenerFile = project(":common").file("src/main/resources/${rootProject.mod_id}.accesswidener")
-
 loom {
     mixin {
         defaultRefmapName = "${project.mod_id}-refmap.json"
     }
-    runs {
-        datagen {
-            server()
-
-            name "Minecraft Data"
-            vmArg "-Dfabric-api.datagen"
-            vmArg "-Dfabric-api.datagen.output-dir=${generatedResources}"
-
-            runDir "build/datagen"
-        }
-    }
-//    accessWidenerPath.set(accessWidenerFile)
-}
-
-sourceSets.main.resources {
-    srcDir generatedResources
 }
 
 configurations {
@@ -45,8 +26,8 @@ configurations {
     developmentFabric.extendsFrom common
 }
 
+
 repositories {
-    mavenCentral()
     maven { url "https://maven.terraformersmc.com/" }
 }
 
@@ -55,19 +36,14 @@ dependencies {
     modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
     modApi("gg.moonflower:pollen-fabric:${rootProject.pollen_version}") { transitive = false }
 
-    modApi "com.terraformersmc:modmenu:${rootProject.mod_menu_version}"
+    modRuntimeOnly "com.terraformersmc:modmenu:${rootProject.mod_menu_version}"
 
-    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+    implementation(project(path: ":common", configuration: "namedElements")) { transitive false }
+    developmentFabric(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 }
 
-//task copyAccessWidener(type: Copy) {
-//    from(accessWidenerFile)
-//    into(generatedResources)
-//}
-
 processResources {
-//    dependsOn(copyAccessWidener)
     inputs.property "id", rootProject.mod_id
     inputs.property "name", rootProject.mod_name
     inputs.property "version", rootProject.mod_version
@@ -88,8 +64,6 @@ processResources {
 }
 
 shadowJar {
-    exclude "architectury.common.json"
-
     configurations = [project.configurations.shadowCommon]
     classifier "dev-shadow"
 }
@@ -108,7 +82,6 @@ sourcesJar {
     def commonSources = project(":common").sourcesJar
     dependsOn commonSources
     from commonSources.archiveFile.map { zipTree(it) }
-    duplicatesStrategy(DuplicatesStrategy.INCLUDE)
 }
 
 components.java {
