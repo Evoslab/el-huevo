@@ -30,9 +30,7 @@ public class HuevoRenderer extends AnimatedEntityRenderer<Huevo> {
 
     @Override
     public ResourceLocation[] getAnimations(Huevo entity) {
-        if (entity.getLastHurtByMobTimestamp() > 0)
-            return HURT_ANIMATION;
-        else if (isMoving)
+        if (isMoving)
             return WALK_ANIMATION;
         else if (entity.isNoAnimationPlaying())
             return IDLE_ANIMATION;
