@@ -40,7 +40,7 @@ import java.util.stream.Stream;
 public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity {
     public static final AnimationState WALK = new AnimationState(20, new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.walk"));
     public static final AnimationState IDLE = new AnimationState(40, new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.idle"));
-    public static final AnimationState FALL = new AnimationState(50, new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.fall"));
+    public static final AnimationState FALL = new AnimationState(48, new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.fall"));
     private static final AnimationState[] ANIMATIONS = Stream.of(WALK, IDLE, FALL).toArray(AnimationState[]::new);
 
     private static final EntityDataAccessor<Integer> DATA_CLOTHING_COLOR = SynchedEntityData.defineId(Huevo.class, EntityDataSerializers.INT);

@@ -19,10 +19,10 @@ import net.minecraft.util.Mth;
 public class HuevoRenderer extends AnimatedEntityRenderer<Huevo> {
     private static final ResourceLocation[] IDLE_ANIMATION = new ResourceLocation[]{new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.idle")};
     private static final ResourceLocation[] WALK_ANIMATION = new ResourceLocation[]{new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.walk")};
-    private static final ResourceLocation[] HURT_ANIMATION = new ResourceLocation[]{new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.hurt")};
     private static final ResourceLocation HUEVO_LOCATION = new ResourceLocation(ElHuevo.MOD_ID, "huevo");
 
     private boolean isMoving = true;
+
     public HuevoRenderer(EntityRendererProvider.Context context) {
         super(context, new ResourceLocation(ElHuevo.MOD_ID, "huevo"), 0.4F);
         this.addLayer(new HuevoClothingLayer(this));

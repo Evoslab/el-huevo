@@ -25,9 +25,6 @@ public class HuevoClothingLayer extends RenderLayer<Huevo, AnimatedGeometryEntit
 
     @Override
     public void render(PoseStack matrixStack, MultiBufferSource buffer, int packedLight, Huevo livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (GeometryTextureManager.isReloading())
-            return;
-
         ResourceLocation location = switch (livingEntity.getClothingColor()) {
             case RED -> new ResourceLocation(ElHuevo.MOD_ID, "huevo_red");
             case BLUE -> new ResourceLocation(ElHuevo.MOD_ID, "huevo_blue");
@@ -48,7 +45,7 @@ public class HuevoClothingLayer extends RenderLayer<Huevo, AnimatedGeometryEntit
         };
 
         if (livingEntity.isTame() && !livingEntity.isInvisible()) {
-            GeometryModelRenderer.render(this.getParentModel().getModel(), location, matrixStack, packedLight, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0F);
+            GeometryModelRenderer.render(this.getParentModel().getModel(), location, buffer, matrixStack, packedLight, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0F);
         }
     }
 }
