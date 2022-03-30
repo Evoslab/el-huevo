@@ -1,8 +1,8 @@
 package gg.cookiejar.el_huevo.client.render.entity.layers;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import gg.cookiejar.el_huevo.common.entity.Huevo;
 import gg.cookiejar.el_huevo.core.ElHuevo;
-import com.mojang.blaze3d.vertex.PoseStack;
 import gg.moonflower.pollen.pinwheel.api.client.animation.AnimatedGeometryEntityModel;
 import gg.moonflower.pollen.pinwheel.api.client.geometry.GeometryModelRenderer;
 import gg.moonflower.pollen.pinwheel.api.client.texture.GeometryTextureManager;
@@ -41,7 +41,7 @@ public class HuevoClothingLayer extends RenderLayer<Huevo, AnimatedGeometryEntit
             case MAGENTA -> new ResourceLocation(ElHuevo.MOD_ID, "huevo_magenta");
             case LIGHT_BLUE -> new ResourceLocation(ElHuevo.MOD_ID, "huevo_light_blue");
             case LIGHT_GRAY -> new ResourceLocation(ElHuevo.MOD_ID, "huevo_light_gray");
-            default -> new ResourceLocation(ElHuevo.MOD_ID, "huevo_white");
+            case WHITE -> new ResourceLocation(ElHuevo.MOD_ID, "huevo_white");
         };
 
         if (livingEntity.isTame() && !livingEntity.isInvisible()) {

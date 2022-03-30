@@ -19,6 +19,7 @@ import net.minecraft.util.Mth;
 public class HuevoRenderer extends AnimatedEntityRenderer<Huevo> {
     private static final ResourceLocation[] IDLE_ANIMATION = new ResourceLocation[]{new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.idle")};
     private static final ResourceLocation[] WALK_ANIMATION = new ResourceLocation[]{new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.walk")};
+    private static final ResourceLocation[] DANCE_ANIMATION = new ResourceLocation[]{new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.dance")};
     private static final ResourceLocation HUEVO_LOCATION = new ResourceLocation(ElHuevo.MOD_ID, "huevo");
 
     private boolean isMoving = true;
@@ -30,7 +31,13 @@ public class HuevoRenderer extends AnimatedEntityRenderer<Huevo> {
 
     @Override
     public ResourceLocation[] getAnimations(Huevo entity) {
-        if (isMoving)
+        if (entity.isInSittingPose())
+            //TODO add sitting animation like 1.0.0
+            return IDLE_ANIMATION;
+        else if (entity.isHuevoDancing() && entity.isInSittingPose())
+            return DANCE_ANIMATION;
+        else if (isMoving)
+            //todo: make this easier check out isInSittingPose parrot
             return WALK_ANIMATION;
         else if (entity.isNoAnimationPlaying())
             return IDLE_ANIMATION;

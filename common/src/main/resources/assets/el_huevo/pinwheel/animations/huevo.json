@@ -1,12 +1,12 @@
 {
-  "format_version": "1.8.0",
+  "format_version" : "1.8.0",
   "animations": {
     "huevo.walk": {
       "loop": true,
       "animation_length": 1,
       "bones": {
         "leftleg": {
-          "rotation": ["Math.cos(query.anim_time * 360) * -14", 0, 0],
+          "rotation": ["math.cos(q.life_time * 360) * -14", 0, 0],
           "position": {
             "0.0": {
               "post": [0, 0, -0.5],
@@ -21,7 +21,7 @@
           }
         },
         "rightleg": {
-          "rotation": ["Math.cos(query.anim_time * 360) * 14", 0, 0],
+          "rotation": ["math.cos(q.life_time * 360) * 14", 0, 0],
           "position": {
             "0.0": [0, 0, 0.5],
             "0.25": [0, 0.5, -0.5],
@@ -33,17 +33,13 @@
           }
         },
         "bodyhead": {
-          "rotation":["Math.cos(query.anim_time * 720) * 2", 0, 0]
+          "rotation": ["math.cos(q.life_time * 720) * 2", 0, 0]
         },
         "tail": {
-          "rotation": {
-            "post": [0, "Math.cos((query.anim_time - 0.2) * 360) * -8", 0]
-          }
+          "rotation": [0, "math.cos((q.life_time - 0.2) * 360) * -8", 0]
         },
         "root": {
-          "rotation": {
-            "post": [0, "Math.cos(query.anim_time * 360) * -5", 0]
-          }
+          "rotation": [0, "math.cos(q.life_time * 360) * -5", 0]
         }
       }
     },
@@ -52,13 +48,11 @@
       "animation_length": 2,
       "bones": {
         "bodyhead": {
-          "rotation": ["Math.sin (query.anim_time * 180) * 1", 0, 0],
-          "position": {
-            "post": [0, "-0.2 + Math.cos(query.anim_time * 180) * 0.08 ", 0]
-          }
+          "rotation": ["math.sin(q.life_time * 180) * 1", 0, 0],
+          "position": [0, "-0.2 + math.cos(q.life_time * 180) * 0.08 ", 0]
         },
         "tail": {
-          "rotation": ["Math.sin(query.anim_time * 180 - 40) * 5", 0, 0]
+          "rotation": ["math.sin(q.life_time * 180 - 40) * 5", 0, 0]
         }
       }
     },
@@ -108,10 +102,10 @@
       "animation_length": 1,
       "bones": {
         "bodyhead": {
-          "rotation": ["Math.cos(query.anim_time * 720) * 5", 0, "Math.sin(query.anim_time * 720) * 5"]
+          "rotation": ["math.cos(q.life_time * 720) * 5", 0, "math.sin(q.life_time * 720) * 5"]
         },
         "tail": {
-          "rotation": ["Math.cos(query.anim_time * 720) * 5", 0, "Math.sin(query.anim_time * 720) * 5"]
+          "rotation": ["math.cos(q.life_time * 720) * 5", 0, "math.sin(q.life_time * 720) * 5"]
         }
       }
     },

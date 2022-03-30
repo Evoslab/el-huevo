@@ -24,6 +24,7 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
@@ -32,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-// TODO Make huevo dance, fall, add custom sounds, etc.
+// TODO Make huevo dance, add custom sounds, etc.
 
 /**
  * @author Steven
@@ -40,14 +41,18 @@ import java.util.stream.Stream;
 public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity {
     public static final AnimationState WALK = new AnimationState(20, new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.walk"));
     public static final AnimationState IDLE = new AnimationState(40, new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.idle"));
-    public static final AnimationState FALL = new AnimationState(48, new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.fall"));
-    private static final AnimationState[] ANIMATIONS = Stream.of(WALK, IDLE, FALL).toArray(AnimationState[]::new);
+    public static final AnimationState FALL = new AnimationState(45, new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.fall"));
+    public static final AnimationState DANCE = new AnimationState(40, new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.dance"));
+    private static final AnimationState[] ANIMATIONS = Stream.of(WALK, IDLE, FALL, DANCE).toArray(AnimationState[]::new);
 
     private static final EntityDataAccessor<Integer> DATA_CLOTHING_COLOR = SynchedEntityData.defineId(Huevo.class, EntityDataSerializers.INT);
 
     private final AnimationEffectHandler effectHandler;
     private AnimationState animationState;
     private int animationTick;
+
+    private boolean dancingHuevo;
+    private BlockPos jukebox;
 
     public Huevo(EntityType<? extends Huevo> entityType, Level level) {
         super(entityType, level);
@@ -58,7 +63,7 @@ public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity
     }
 
     @Override
-    protected void registerGoals() {// TODO: Fall Goal and Roll Around Goal (aka panda)
+    protected void registerGoals() {// TODO: Roll Around Goal (aka panda)
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
@@ -146,6 +151,26 @@ public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity
             this.setHealth(20.0F);
         } else
             Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(8.5D);
+    }
+
+    @Override
+    public void aiStep() {
+        if (this.jukebox == null || !this.jukebox.closerThan(this.position(), 3.46D) || !this.level.getBlockState(this.jukebox).is(Blocks.JUKEBOX)) {
+            this.dancingHuevo = false;
+            this.jukebox = null;
+        }
+
+        super.aiStep();
+    }
+
+    @Override
+    public void setRecordPlayingNearby(BlockPos blockPos, boolean bl) {
+        this.jukebox = blockPos;
+        this.dancingHuevo = bl;
+    }
+
+    public boolean isHuevoDancing() {
+        return this.dancingHuevo;
     }
 
     @Override
