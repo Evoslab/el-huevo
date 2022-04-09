@@ -292,6 +292,7 @@ public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity
         this.animationTick = animationTick;
     }
 
+
     @Override
     public AnimationState getIdleAnimationState() {
         return IDLE;
