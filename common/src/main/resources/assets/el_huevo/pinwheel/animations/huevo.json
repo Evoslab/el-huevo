@@ -109,6 +109,22 @@
         }
       }
     },
+    "huevo.sit": {
+      "loop": true,
+      "bones": {
+        "bodyhead": {
+          "position": [0, -1, 0]
+        },
+        "rightleg": {
+          "rotation": [-90, 0, 0],
+          "position": [0, -1, -2]
+        },
+        "leftleg": {
+          "rotation": [-90, 0, 0],
+          "position": [0, -1, -2]
+        }
+      }
+    },
     "huevo.setup": {
       "loop": true,
       "bones": {

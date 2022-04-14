@@ -1,16 +1,14 @@
 package gg.cookiejar.el_huevo.client.render.entity;
 
-import gg.cookiejar.el_huevo.client.render.entity.layers.HuevoClothingLayer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import gg.cookiejar.el_huevo.common.entity.Huevo;
 import gg.cookiejar.el_huevo.core.ElHuevo;
-import com.mojang.blaze3d.vertex.PoseStack;
 import gg.moonflower.pollen.pinwheel.api.client.animation.AnimatedEntityRenderer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
@@ -22,6 +20,7 @@ public class HuevoRenderer extends AnimatedEntityRenderer<Huevo> {
     private static final ResourceLocation[] IDLE_ANIMATION = new ResourceLocation[]{new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.idle")};
     private static final ResourceLocation[] WALK_ANIMATION = new ResourceLocation[]{new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.walk")};
     private static final ResourceLocation[] DANCE_ANIMATION = new ResourceLocation[]{new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.dance")};
+    private static final ResourceLocation[] SIT_ANIMATION = new ResourceLocation[]{new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.sit")};
     public static final ResourceLocation HUEVO_LOCATION = new ResourceLocation(ElHuevo.MOD_ID, "huevo");
 
     private boolean isMoving = true;
@@ -32,13 +31,11 @@ public class HuevoRenderer extends AnimatedEntityRenderer<Huevo> {
 
     @Override
     public ResourceLocation[] getAnimations(Huevo entity) {
-        if (entity.isInSittingPose())
-            //TODO add sitting animation like 1.0.0
-            return IDLE_ANIMATION;
-        else if (entity.isHuevoDancing() && entity.isInSittingPose())
+        if (entity.isDancing() && entity.isInSittingPose())
             return DANCE_ANIMATION;
+        if (!entity.isDancing() & entity.isInSittingPose())
+            return SIT_ANIMATION;
         else if (isMoving)
-            //todo: make this easier check out isInSittingPose parrot
             return WALK_ANIMATION;
         else if (entity.isNoAnimationPlaying())
             return IDLE_ANIMATION;
@@ -46,7 +43,7 @@ public class HuevoRenderer extends AnimatedEntityRenderer<Huevo> {
     }
 
     @Override
-    protected void setupRotations(Huevo entity, PoseStack matrixStack, float ticksExisted, float rotY, float partialTicks) {
+    public ResourceLocation getTextureTableLocation(Huevo entity) {
         ResourceLocation location = switch (entity.getClothingColor()) {
             case RED -> new ResourceLocation(ElHuevo.MOD_ID, "huevo_red");
             case BLUE -> new ResourceLocation(ElHuevo.MOD_ID, "huevo_blue");
@@ -67,12 +64,8 @@ public class HuevoRenderer extends AnimatedEntityRenderer<Huevo> {
         };
 
         if (entity.isTame() && !entity.isInvisible()) {
-            this.model.setTexture(location);
+            return location;
         }
-    }
-
-    @Override
-    public ResourceLocation getTextureTableLocation(Huevo entity) {
         return HUEVO_LOCATION;
     }
 
@@ -93,5 +86,53 @@ public class HuevoRenderer extends AnimatedEntityRenderer<Huevo> {
 
         matrixStack.popPose();
         super.render(entity, entityYaw, partialTicks, matrixStack, buffer, packedLight);
+    }
+
+    @Override
+    public void setupRotations(Huevo huevo, PoseStack poseStack, float f, float g, float h) {
+        super.setupRotations(huevo, poseStack, f, g, h);
+        if (huevo.rollCounter > 0) {
+            int i = huevo.rollCounter;
+            int j = i + 1;
+            float l = huevo.isBaby() ? 0.3F : 0.8F;
+            float o;
+            float m;
+            float n;
+            if (i < 8) {
+                m = (float)(90 * i) / 7.0F;
+                n = (float)(90 * j) / 7.0F;
+                o = this.getAngle(m, n, j, h, 8.0F);
+                poseStack.translate(0.0D, (l + 0.2F) * (o / 90.0F), 0.0D);
+                poseStack.mulPose(Vector3f.XP.rotationDegrees(-o));
+            } else {
+                float p;
+                if (i < 16) {
+                    m = ((float)i - 8.0F) / 7.0F;
+                    n = 90.0F + 90.0F * m;
+                    p = 90.0F + 90.0F * ((float)j - 8.0F) / 7.0F;
+                    o = this.getAngle(n, p, j, h, 16.0F);
+                    poseStack.translate(0.0D, l + 0.2F + (l - 0.2F) * (o - 90.0F) / 90.0F, 0.0D);
+                    poseStack.mulPose(Vector3f.XP.rotationDegrees(-o));
+                } else if ((float)i < 24.0F) {
+                    m = ((float)i - 16.0F) / 7.0F;
+                    n = 180.0F + 90.0F * m;
+                    p = 180.0F + 90.0F * ((float)j - 16.0F) / 7.0F;
+                    o = this.getAngle(n, p, j, h, 24.0F);
+                    poseStack.translate(0.0D, l + l * (270.0F - o) / 90.0F, 0.0D);
+                    poseStack.mulPose(Vector3f.XP.rotationDegrees(-o));
+                } else if (i < 32) {
+                    m = ((float)i - 24.0F) / 7.0F;
+                    n = 270.0F + 90.0F * m;
+                    p = 270.0F + 90.0F * ((float)j - 24.0F) / 7.0F;
+                    o = this.getAngle(n, p, j, h, 32.0F);
+                    poseStack.translate(0.0D, l * ((360.0F - o) / 90.0F), 0.0D);
+                    poseStack.mulPose(Vector3f.XP.rotationDegrees(-o));
+                }
+            }
+        }
+    }
+
+    private float getAngle(float f, float g, int i, float h, float j) {
+        return (float)i < j ? Mth.lerp(h, f, g) : f;
     }
 }

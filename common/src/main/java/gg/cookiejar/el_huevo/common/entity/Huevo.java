@@ -15,11 +15,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -30,10 +32,9 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.EnumSet;
 import java.util.Objects;
 import java.util.stream.Stream;
-
-// TODO Make huevo dance, add custom sounds, etc.
 
 /**
  * @author Steven
@@ -41,11 +42,13 @@ import java.util.stream.Stream;
 public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity {
     public static final AnimationState WALK = new AnimationState(20, new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.walk"));
     public static final AnimationState IDLE = new AnimationState(40, new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.idle"));
-    public static final AnimationState FALL = new AnimationState(45, new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.fall"));
+    public static final AnimationState FALL = new AnimationState(40, new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.fall"));
     public static final AnimationState DANCE = new AnimationState(40, new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.dance"));
-    private static final AnimationState[] ANIMATIONS = Stream.of(WALK, IDLE, FALL, DANCE).toArray(AnimationState[]::new);
+    public static final AnimationState SIT = new AnimationState(10, new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.sit"));
+    private static final AnimationState[] ANIMATIONS = Stream.of(WALK, IDLE, FALL, DANCE, SIT).toArray(AnimationState[]::new);
 
     private static final EntityDataAccessor<Integer> DATA_CLOTHING_COLOR = SynchedEntityData.defineId(Huevo.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Byte> DATA_ID_FLAGS = SynchedEntityData.defineId(Huevo.class, EntityDataSerializers.BYTE);
 
     private final AnimationEffectHandler effectHandler;
     private AnimationState animationState;
@@ -54,23 +57,33 @@ public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity
     private boolean dancingHuevo;
     private BlockPos jukebox;
 
+
+    private static final int FLAG_ROLL = 4;
+    public static final int TOTAL_ROLL_STEPS = 32;
+    public int rollCounter;
+    private Vec3 rollDelta;
+    private float rollAmount;
+    private float rollAmountO;
+
     public Huevo(EntityType<? extends Huevo> entityType, Level level) {
         super(entityType, level);
         this.setTame(false);
         this.xpReward = 35;
         this.effectHandler = new AnimationEffectHandler(this);
         this.animationState = AnimationState.EMPTY;
+        this.moveControl = new Huevo.HuevoMoveControl(this);
     }
 
     @Override
-    protected void registerGoals() {// TODO: Roll Around Goal (aka panda)
+    protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
+        this.goalSelector.addGoal(3, new PanicGoal(this, 2.2D));
         this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
         this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
-//        this.targetSelector.addGoal(1, (new Huevo.HuevoHurtByTargetGoal(this)).setAlertOthers());
+        this.goalSelector.addGoal(11, new Huevo.HuevoRollGoal(this));
     }
 
     @Override
@@ -81,6 +94,13 @@ public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity
     @Override
     public void tick() {
         super.tick();
+        if (this.isRolling()) {
+            this.handleRoll();
+        } else {
+            this.rollCounter = 0;
+        }
+
+        this.updateRollAmount();
         this.animationTick();
     }
 
@@ -91,10 +111,72 @@ public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity
         this.setAnimationTick(0);
     }
 
+    private void updateRollAmount() {
+        this.rollAmountO = this.rollAmount;
+        if (this.isRolling()) {
+            this.rollAmount = Math.min(1.0F, this.rollAmount + 0.15F);
+        } else {
+            this.rollAmount = Math.max(0.0F, this.rollAmount - 0.19F);
+        }
+    }
+
+    public float getRollAmount(float f) {
+        return Mth.lerp(f, this.rollAmountO, this.rollAmount);
+    }
+
+    private void handleRoll() {
+        ++this.rollCounter;
+        if (this.rollCounter > 32) {
+            this.roll(false);
+        } else {
+            if (!this.level.isClientSide) {
+                Vec3 vec3 = this.getDeltaMovement();
+                if (this.rollCounter == 1) {
+                    float f = this.getYRot() * 0.017453292F;
+                    float g = this.isBaby() ? 0.1F : 0.2F;
+                    this.rollDelta = new Vec3(vec3.x + (double)(-Mth.sin(f) * g), 0.0D, vec3.z + (double)(Mth.cos(f) * g));
+                    this.setDeltaMovement(this.rollDelta.add(0.0D, 0.27D, 0.0D));
+                } else if ((float)this.rollCounter != 7.0F && (float)this.rollCounter != 15.0F && (float)this.rollCounter != 23.0F) {
+                    this.setDeltaMovement(this.rollDelta.x, vec3.y, this.rollDelta.z);
+                } else {
+                    this.setDeltaMovement(0.0D, this.onGround ? 0.27D : vec3.y, 0.0D);
+                }
+            }
+
+        }
+    }
+
+    public boolean isRolling() {
+        return this.getFlag(4);
+    }
+
+    public boolean isDancing() {
+        return this.dancingHuevo;
+    }
+
+    public void roll(boolean bl) {
+        this.setFlag(4, bl);
+    }
+
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
+        this.entityData.define(DATA_ID_FLAGS, (byte)0);
         this.entityData.define(DATA_CLOTHING_COLOR, DyeColor.RED.getId());
+    }
+
+    private boolean getFlag(int i) {
+        return (this.entityData.get(DATA_ID_FLAGS) & i) != 0;
+    }
+
+    private void setFlag(int i, boolean bl) {
+        byte b = this.entityData.get(DATA_ID_FLAGS);
+        if (bl) {
+            this.entityData.set(DATA_ID_FLAGS, (byte)(b | i));
+        } else {
+            this.entityData.set(DATA_ID_FLAGS, (byte)(b & ~i));
+        }
+
     }
 
     @Override
@@ -143,6 +225,10 @@ public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity
         return size.height * 0.85F;
     }
 
+    public boolean canPerformAction() {
+        return !this.isRolling();
+    }
+
     @Override
     public void setTame(boolean tamed) {
         super.setTame(tamed);
@@ -167,10 +253,6 @@ public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity
     public void setRecordPlayingNearby(BlockPos blockPos, boolean bl) {
         this.jukebox = blockPos;
         this.dancingHuevo = bl;
-    }
-
-    public boolean isHuevoDancing() {
-        return this.dancingHuevo;
     }
 
     @Override
@@ -239,6 +321,7 @@ public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity
     @Override
     public boolean hurt(DamageSource damageSource, float f) {
         AnimatedEntity.setAnimation(this, FALL);
+        //TODO: fix this
         return super.hurt(damageSource, f);
     }
 
@@ -302,4 +385,76 @@ public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity
     public AnimationState[] getAnimationStates() {
         return ANIMATIONS;
     }
+
+    static class HuevoMoveControl extends MoveControl {
+        private final Huevo huevo;
+
+        public HuevoMoveControl(Huevo huevo) {
+            super(huevo);
+            this.huevo = huevo;
+        }
+
+        public void tick() {
+            if (this.huevo.canPerformAction()) {
+                super.tick();
+            }
+        }
+    }
+
+    static class HuevoRollGoal extends Goal {
+        private final Huevo huevo;
+
+        public HuevoRollGoal(Huevo huevo) {
+            this.huevo = huevo;
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP));
+        }
+
+        public boolean canUse() {
+            if (this.huevo.onGround) {
+                if (!this.huevo.canPerformAction()) {
+                    return false;
+                } else {
+                    float f = this.huevo.getYRot() * 0.017453292F;
+                    int i = 0;
+                    int j = 0;
+                    float g = -Mth.sin(f);
+                    float h = Mth.cos(f);
+                    if ((double)Math.abs(g) > 0.5D) {
+                        i = (int)((float)i + g / Math.abs(g));
+                    }
+
+                    if ((double)Math.abs(h) > 0.5D) {
+                        j = (int)((float)j + h / Math.abs(h));
+                    }
+
+                    if (this.huevo.level.getBlockState(this.huevo.blockPosition().offset(i, -1, j)).isAir()) {
+                        return true;
+                    } else {
+                        return this.huevo.random.nextInt(reducedTickDelay(300)) == 1;
+                    }
+                }
+            } else {
+                return false;
+            }
+        }
+
+        public boolean canContinueToUse() {
+            return false;
+        }
+
+        public void start() {
+            this.huevo.roll(true);
+        }
+
+        public boolean isInterruptable() {
+            return false;
+        }
+    }
 }
+
+//TODO: also i think they need custom sounds
+// what if they didnt bark
+// and instead they
+// did some sniffing noises
+// and stuff like that
+// and when they get hit they would have somewhat the same sound
