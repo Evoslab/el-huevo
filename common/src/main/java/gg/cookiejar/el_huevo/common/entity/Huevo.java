@@ -1,6 +1,7 @@
 package gg.cookiejar.el_huevo.common.entity;
 
 import gg.cookiejar.el_huevo.core.ElHuevo;
+import gg.cookiejar.el_huevo.core.registry.ElHuevoSoundEvents;
 import gg.moonflower.pollen.api.entity.PollenEntity;
 import gg.moonflower.pollen.api.util.NbtConstants;
 import gg.moonflower.pollen.pinwheel.api.common.animation.AnimatedEntity;
@@ -14,7 +15,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -42,7 +42,7 @@ import java.util.stream.Stream;
 public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity {
     public static final AnimationState WALK = new AnimationState(20, new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.walk"));
     public static final AnimationState IDLE = new AnimationState(40, new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.idle"));
-    public static final AnimationState FALL = new AnimationState(40, new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.fall"));
+    public static final AnimationState FALL = new AnimationState(30, new ResourceLocation(ElHuevo.MOD_ID, "huevo.fall"));
     public static final AnimationState DANCE = new AnimationState(40, new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.dance"));
     public static final AnimationState SIT = new AnimationState(10, new ResourceLocation(ElHuevo.MOD_ID, "huevo.setup"), new ResourceLocation(ElHuevo.MOD_ID, "huevo.sit"));
     private static final AnimationState[] ANIMATIONS = Stream.of(WALK, IDLE, FALL, DANCE, SIT).toArray(AnimationState[]::new);
@@ -57,9 +57,6 @@ public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity
     private boolean dancingHuevo;
     private BlockPos jukebox;
 
-
-    private static final int FLAG_ROLL = 4;
-    public static final int TOTAL_ROLL_STEPS = 32;
     public int rollCounter;
     private Vec3 rollDelta;
     private float rollAmount;
@@ -178,10 +175,9 @@ public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity
         }
 
     }
-
     @Override
     protected void playStepSound(BlockPos pos, BlockState block) {
-        this.playSound(SoundEvents.WOLF_STEP, 0.15F, 1.0F);
+        this.playSound(ElHuevoSoundEvents.HUEVO_STEP.get(), 0.15F, 1.0F);
     }
 
     @Override
@@ -200,19 +196,19 @@ public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity
     @Override
     protected SoundEvent getAmbientSound() {
         if (this.random.nextInt(3) == 0)
-            return this.isTame() && this.getHealth() < 10.0F ? SoundEvents.WOLF_WHINE : SoundEvents.WOLF_PANT;
+            return this.isTame() && this.getHealth() < 10.0F ? ElHuevoSoundEvents.HUEVO_WHINE.get() : ElHuevoSoundEvents.HUEVO_PANT.get();
         else
-            return SoundEvents.WOLF_AMBIENT;
+            return ElHuevoSoundEvents.HUEVO_AMBIENT.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return SoundEvents.WOLF_HURT;
+        return ElHuevoSoundEvents.HUEVO_HURT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.WOLF_DEATH;
+        return ElHuevoSoundEvents.HUEVO_DEATH.get();
     }
 
     @Override
@@ -253,6 +249,11 @@ public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity
     public void setRecordPlayingNearby(BlockPos blockPos, boolean bl) {
         this.jukebox = blockPos;
         this.dancingHuevo = bl;
+    }
+
+    @Override
+    public boolean causeFallDamage(float f, float g, DamageSource damageSource) {
+        return false;
     }
 
     @Override

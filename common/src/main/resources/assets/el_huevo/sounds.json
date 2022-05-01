@@ -1,0 +1,40 @@
+{
+  "huevo_ambient": {
+    "subtitle": "sound_event.el_huevo.entity.huevo.ambient",
+    "sounds": [
+      "el_huevo:entity/huevo/ambient",
+      "el_huevo:entity/huevo/ambient2",
+      "el_huevo:entity/huevo/ambient3"
+    ]
+  },
+  "huevo_death": {
+    "subtitle": "sound_event.el_huevo.entity.huevo.death",
+    "sounds": [
+      "el_huevo:entity/huevo/death"
+    ]
+  },
+  "huevo_hurt": {
+    "subtitle": "sound_event.el_huevo.entity.huevo.hurt",
+    "sounds": [
+      "el_huevo:entity/huevo/hurt"
+    ]
+  },
+  "huevo_pant": {
+    "subtitle": "sound_event.el_huevo.entity.huevo.pant",
+    "sounds": [
+      "el_huevo:entity/huevo/pant"
+    ]
+  },
+  "huevo_step": {
+    "subtitle": "sound_event.el_huevo.entity.huevo.step",
+    "sounds": [
+      "el_huevo:entity/huevo/step"
+    ]
+  },
+  "huevo_whine": {
+    "subtitle": "sound_event.el_huevo.entity.huevo.whine",
+    "sounds": [
+      "el_huevo:entity/huevo/whine"
+    ]
+  }
+}
