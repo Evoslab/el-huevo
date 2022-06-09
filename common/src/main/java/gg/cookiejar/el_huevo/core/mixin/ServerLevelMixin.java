@@ -1,6 +1,7 @@
 package gg.cookiejar.el_huevo.core.mixin;
 
 import gg.cookiejar.el_huevo.common.misc.ElHuevoSpawner;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -22,8 +23,8 @@ import java.util.function.Supplier;
  */
 @Mixin(ServerLevel.class)
 public abstract class ServerLevelMixin extends Level implements WorldGenLevel {
-    protected ServerLevelMixin(WritableLevelData writableLevelData, ResourceKey<Level> resourceKey, DimensionType dimensionType, Supplier<ProfilerFiller> supplier, boolean bl, boolean bl2, long l) {
-        super(writableLevelData, resourceKey, dimensionType, supplier, bl, bl2, l);
+    protected ServerLevelMixin(WritableLevelData writableLevelData, ResourceKey<Level> resourceKey, Holder<DimensionType> holder, Supplier<ProfilerFiller> supplier, boolean bl, boolean bl2, long l) {
+        super(writableLevelData, resourceKey, holder, supplier, bl, bl2, l);
     }
 
     @ModifyVariable(method = "<init>", at = @At(value = "FIELD", target = "net/minecraft/server/level/ServerLevel.customSpawners:Ljava/util/List;", shift = At.Shift.BEFORE), index = 12, argsOnly = true)

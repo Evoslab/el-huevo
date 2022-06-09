@@ -1,7 +1,6 @@
 package gg.cookiejar.el_huevo.api.biome;
 
 import net.minecraft.core.Registry;
-import net.minecraft.core.WritableRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.biome.Biome;
@@ -46,7 +45,7 @@ public class SpawnBiomes {
     }
 
     public static boolean isValidBiome(ServerLevel serverWorld, Biome biome) {
-        WritableRegistry<Biome> registry = serverWorld.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY);
+        Registry<Biome> registry = serverWorld.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY);
         ResourceLocation biomeKey;
 
         if (registry.getResourceKey(biome).isPresent()) {

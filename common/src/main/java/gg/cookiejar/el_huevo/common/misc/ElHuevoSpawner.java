@@ -41,7 +41,7 @@ public class ElHuevoSpawner implements CustomSpawner {
 
                     if (level.hasChunksAt(pos.getX() - 10, pos.getY() - 10, pos.getZ() - 10, pos.getX() + 10, pos.getY() + 10, pos.getZ() + 10)) {
 
-                        if (!SpawnBiomes.isValidBiome(level, level.getBiome(pos)))
+                        if (!SpawnBiomes.isValidBiome(level, level.getBiome(pos).value()))
                             return 0;
 
                         if (NaturalSpawner.isSpawnPositionOk(SpawnPlacements.Type.ON_GROUND, level, pos, ElHuevoEntities.HUEVO.get())) {

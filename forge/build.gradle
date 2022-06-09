@@ -7,8 +7,14 @@ plugins {
 
 archivesBaseName = "${rootProject.archivesBaseName}-${project.name}"
 
+architectury {
+    platformSetupLoomIde()
+    forge()
+}
+
 loom {
     forge {
+        // For some reason gradle doesn't like using rootProject here?
         mixinConfig "${project.mod_id}-common.mixins.json"
         mixinConfig "${project.mod_id}.mixins.json"
 
@@ -21,11 +27,6 @@ loom {
     }
 }
 
-architectury {
-    platformSetupLoomIde()
-    forge()
-}
-
 configurations {
     common
     shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
@@ -34,16 +35,16 @@ configurations {
     developmentForge.extendsFrom common
 }
 
+
 dependencies {
     forge "net.minecraftforge:forge:${rootProject.minecraft_version}-${rootProject.forge_version}"
 
     modApi("gg.moonflower:pollen-forge:${rootProject.pollen_version}") { transitive = false }
 
-    modRuntimeOnly "curse.maven:configured-457570:3559398"
-    modRuntimeOnly "curse.maven:catalogue-459701:3559402"
+//	modRuntimeOnly "curse.maven:configured-457570:3533860"
+//  modRuntimeOnly "curse.maven:catalogue-459701:3529457"
 
-    implementation(project(path: ":common", configuration: "namedElements")) { transitive false }
-    developmentForge(project(path: ":common", configuration: "namedElements")) { transitive false }
+    common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 }
 
@@ -69,6 +70,7 @@ processResources {
 
 shadowJar {
     exclude "fabric.mod.json"
+    exclude "archiectury.common.json"
 
     configurations = [project.configurations.shadowCommon]
     classifier "dev-shadow"

@@ -108,6 +108,11 @@ public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity
         this.setAnimationTick(0);
     }
 
+    @Override
+    public void setTransitionAnimationState(AnimationState state) {
+
+    }
+
     private void updateRollAmount() {
         this.rollAmountO = this.rollAmount;
         if (this.isRolling()) {
@@ -237,7 +242,7 @@ public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity
 
     @Override
     public void aiStep() {
-        if (this.jukebox == null || !this.jukebox.closerThan(this.position(), 3.46D) || !this.level.getBlockState(this.jukebox).is(Blocks.JUKEBOX)) {
+        if (this.jukebox == null || !this.jukebox.closerToCenterThan(this.position(), 3.46D) || !this.level.getBlockState(this.jukebox).is(Blocks.JUKEBOX)) {
             this.dancingHuevo = false;
             this.jukebox = null;
         }
@@ -362,8 +367,23 @@ public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity
     }
 
     @Override
+    public int getAnimationTransitionTick() {
+        return 0;
+    }
+
+    @Override
+    public int getAnimationTransitionLength() {
+        return 0;
+    }
+
+    @Override
     public AnimationState getAnimationState() {
         return this.animationState;
+    }
+
+    @Override
+    public AnimationState getTransitionAnimationState() {
+        return null;
     }
 
     @Override
@@ -374,6 +394,16 @@ public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity
     @Override
     public void setAnimationTick(int animationTick) {
         this.animationTick = animationTick;
+    }
+
+    @Override
+    public void setAnimationTransitionTick(int transitionTick) {
+
+    }
+
+    @Override
+    public void setAnimationTransitionLength(int transitionLength) {
+
     }
 
 
@@ -452,10 +482,3 @@ public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity
         }
     }
 }
-
-//TODO: also i think they need custom sounds
-// what if they didnt bark
-// and instead they
-// did some sniffing noises
-// and stuff like that
-// and when they get hit they would have somewhat the same sound
