@@ -44,6 +44,8 @@ dependencies {
 //	modRuntimeOnly "curse.maven:configured-457570:3533860"
 //  modRuntimeOnly "curse.maven:catalogue-459701:3529457"
 
+    modImplementation("curse.maven:farmers-delight-398521:3834150") { transitive = false }
+
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 }

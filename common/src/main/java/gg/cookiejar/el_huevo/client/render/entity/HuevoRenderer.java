@@ -4,11 +4,15 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import gg.cookiejar.el_huevo.common.entity.Huevo;
 import gg.cookiejar.el_huevo.core.ElHuevo;
+import gg.cookiejar.el_huevo.core.util.CompactUtil;
 import gg.moonflower.pollen.pinwheel.api.client.animation.AnimatedEntityRenderer;
+import gg.moonflower.pollen.pinwheel.api.client.animation.AnimatedGeometryEntityModel;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
@@ -27,6 +31,7 @@ public class HuevoRenderer extends AnimatedEntityRenderer<Huevo> {
 
     public HuevoRenderer(EntityRendererProvider.Context context) {
         super(context, new ResourceLocation(ElHuevo.MOD_ID, "huevo"), 0.4F);
+        this.addLayer(new ItemInHandLayer(this));
     }
 
     @Override
@@ -39,6 +44,8 @@ public class HuevoRenderer extends AnimatedEntityRenderer<Huevo> {
             return WALK_ANIMATION;
         else if (entity.isNoAnimationPlaying())
             return IDLE_ANIMATION;
+//        else if (CompactUtil.getKnife() != null && entity.isHolding(CompactUtil.getKnife()))
+//            return IDLE_ANIMATION;
         return super.getAnimations(entity);
     }
 
@@ -135,4 +142,6 @@ public class HuevoRenderer extends AnimatedEntityRenderer<Huevo> {
     private float getAngle(float f, float g, int i, float h, float j) {
         return (float)i < j ? Mth.lerp(h, f, g) : f;
     }
+
+
 }

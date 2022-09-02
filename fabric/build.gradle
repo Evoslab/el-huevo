@@ -43,6 +43,7 @@ dependencies {
     modApi("gg.moonflower:pollen-fabric:${rootProject.pollen_version}") { transitive = false }
 
     modRuntimeOnly "com.terraformersmc:modmenu:${rootProject.mod_menu_version}"
+    modImplementation("curse.maven:farmers-delight-fabric-482834:3930208") { transitive = false }
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }

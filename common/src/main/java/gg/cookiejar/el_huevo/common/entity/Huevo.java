@@ -2,6 +2,7 @@ package gg.cookiejar.el_huevo.common.entity;
 
 import gg.cookiejar.el_huevo.core.ElHuevo;
 import gg.cookiejar.el_huevo.core.registry.ElHuevoSoundEvents;
+import gg.cookiejar.el_huevo.core.util.CompactUtil;
 import gg.moonflower.pollen.api.entity.PollenEntity;
 import gg.moonflower.pollen.api.util.NbtConstants;
 import gg.moonflower.pollen.pinwheel.api.common.animation.AnimatedEntity;
@@ -16,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -480,5 +482,11 @@ public class Huevo extends TamableAnimal implements AnimatedEntity, PollenEntity
         public boolean isInterruptable() {
             return false;
         }
+    }
+
+    @Override
+    protected void populateDefaultEquipmentSlots(DifficultyInstance difficultyInstance) {
+        if (CompactUtil.getKnife() != null)
+            this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(CompactUtil.getKnife()));
     }
 }
